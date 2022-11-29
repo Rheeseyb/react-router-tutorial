@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import {
+  createMemoryRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
 import Contact, { loader as contactLoader } from "./routes/contact";
 import EditContact, { action as editAction } from "./routes/edit";
 import ErrorPage from "./error-page";
@@ -10,32 +15,29 @@ import Root, {
   action as rootAction,
 } from "./routes/root";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "contacts/:contactId",
-        element: <Contact />,
-        loader: contactLoader,
-      },
-      {
-        path: "contacts/:contactId/edit",
-        element: <EditContact />,
-        loader: contactLoader,
-        action: editAction,
-      },
-    ],
-  },
-  {
-    path: "/hi",
-    element: <div>Hi!</div>,
-  },
-]);
+const router = createMemoryRouter(
+  createRoutesFromElements(
+    <Route
+      path="/"
+      element={<Root />}
+      loader={rootLoader}
+      action={rootAction}
+      errorElement={<ErrorPage />}
+    >
+      <Route
+        path="contacts/:contactId"
+        element={<Contact />}
+        loader={contactLoader}
+      />
+      <Route
+        path="contacts/:contactId/edit"
+        element={<EditContact />}
+        loader={contactLoader}
+        action={editAction}
+      />
+    </Route>
+  )
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
