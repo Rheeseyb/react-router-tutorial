@@ -19,7 +19,7 @@ const router = createMemoryRouter(
         errorElement={<div>404!</div>}
       />
       <Route
-        path='contacts/:contactId'
+        path='contacts/:id'
         element={<div>Hello</div>}
       />
     </>,
